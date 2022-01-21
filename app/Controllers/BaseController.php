@@ -2,11 +2,14 @@
 
 namespace App\Controllers;
 
+use App\Models\Models;
+use App\Models\Users;
 use CodeIgniter\Controller;
 use CodeIgniter\HTTP\CLIRequest;
 use CodeIgniter\HTTP\IncomingRequest;
 use CodeIgniter\HTTP\RequestInterface;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Services;
 use Psr\Log\LoggerInterface;
 
 /**
@@ -18,6 +21,7 @@ use Psr\Log\LoggerInterface;
  *     class Home extends BaseController
  *
  * For security be sure to declare any new methods as protected or private.
+ * @property Models $models
  */
 class BaseController extends Controller
 {
@@ -37,6 +41,8 @@ class BaseController extends Controller
      */
     protected $helpers = [];
 
+    private $component = [];
+
     /**
      * Constructor.
      */
@@ -48,5 +54,14 @@ class BaseController extends Controller
         // Preload any models, libraries, etc, here.
 
         // E.g.: $this->session = \Config\Services::session();
+
+    }
+
+    public function __get($name)
+    {
+        if(method_exists('\Config\Services',$name))
+            return Services::$name();;
+
+        return null;
     }
 }

@@ -2,22 +2,12 @@
 
 namespace App\Validation;
 
-
 use App\Models\Models;
 use App\Models\Users;
+use Config\Services;
 
 class UserRules
 {
-
-    /**
-     * @var Models
-     */
-    private $model;
-    public function __construct()
-    {
-        $this->model = new Models();
-    }
-
     /**
      * @param string $str
      * @param string $field
@@ -26,7 +16,7 @@ class UserRules
      */
     public function validateUser(string $str, string $field, array $data): bool
     {
-        $user = $this->model->users->where('users_email', $data['email'])
+        $user = Services::models()->users->where('users_email', $data['email'])
                           ->first();
         if (!$user)
             return false;
